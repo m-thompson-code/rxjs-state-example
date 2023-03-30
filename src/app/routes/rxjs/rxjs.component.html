@@ -1,6 +1,15 @@
-<p>rxjs works!</p>
+<h1>rxjs works!</h1>
 
-<p>Page: {{ page$ | async }}</p>
+<p>This implementation of rxjs is close to component store.</p>
+<p>Main difference is that state is lazy and only updates once a subscription exists</p>
+
+<ng-container *ngIf="page$ | async as page; else info">
+  <p>Page: {{ page }}</p>
+</ng-container>
+
+<ng-template #info>
+  <p>Click a page to view paginated posts</p>
+</ng-template>
 
 <p>Pages: <button *ngFor="let page of pages" (click)="setPage(page)">{{ page }}</button></p>
 

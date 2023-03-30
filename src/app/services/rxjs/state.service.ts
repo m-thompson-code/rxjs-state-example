@@ -12,11 +12,15 @@ const INITIAL_STATE: State = {
   posts: [],
 };
 
+/**
+ * This Service is an opinionated implementation that is close to NgRx component stores.
+ *
+ * If you want a complete match, check out the StateAltService
+ */
 @Injectable()
 export class StateService {
   // Actions
   readonly setPage$ = new Subject<number>;
-
   private readonly pageAction$ = this.setPage$.pipe(map(page => ({ value: page, type: 'page-set' as const })));
 
   // Effect + Posts Action
@@ -64,6 +68,6 @@ export class StateService {
 
 // This implementation doesn't handle effects just like ngrx,
 // but I feel like this is a better approach
-// One key difference is that this effect only functions if there's at least one subscription
+// One key difference is that state and effects are "lazy" and only function if there's at least one subscription
 // To better match ngrx, the state must be subscribed from the service,
 // or at least the effect must be subscribed somewhere
