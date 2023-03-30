@@ -14,12 +14,12 @@ const INITIAL_STATE: State = {
 
 @Injectable()
 export class StateService {
-  // Setter for page action
+  // Actions
   readonly setPage$ = new Subject<number>;
 
-  // Page action
   private readonly pageAction$ = this.setPage$.pipe(map(page => ({ value: page, type: 'page-set' as const })));
-  // Posts effect + posts action
+
+  // Effect + Posts Action
   private readonly postsEffect$ = this.pageAction$.pipe(
     switchMap(action => this.postsService.getPosts(action.value).pipe(
       // Handle potential error within inner pipe.
@@ -31,11 +31,13 @@ export class StateService {
   // Merge for actions into one stream
   readonly state$ = merge(
     this.pageAction$,
+    // This doesn't match with how ngrx's component store handles effects
+    // Notes at bottom of service with why.
     this.postsEffect$,
   ).pipe(
     // Scan to merge action metadata into state
     scan((state, action) => {
-      // Filter by type
+      // Reducer - Filter by type
       switch(action.type) {
         case 'page-set':
           return { ...state, page: action.value, posts: [] }
@@ -59,3 +61,9 @@ export class StateService {
 
   }
 }
+
+// This implementation doesn't handle effects just like ngrx,
+// but I feel like this is a better approach
+// One key difference is that this effect only functions if there's at least one subscription
+// To better match ngrx, the state must be subscribed from the service,
+// or at least the effect must be subscribed somewhere

@@ -15,6 +15,7 @@ const INITIAL_STATE: State = {
 
 @Injectable()
 export class StateStore extends ComponentStore<State> {
+  // Selectors
   readonly page$ = this.state$.pipe(
     map(state => state.page),
   );
@@ -28,14 +29,23 @@ export class StateStore extends ComponentStore<State> {
 
     // Setup effect page$ -> posts$
     this.getPosts(this.page$.pipe(distinctUntilChanged()));
+    // ^I don't know how else to set this up without `distinctUntilChanged`
+    // Without it, it will infinite loop
   }
 
+  // Actions + Reducers
   readonly setPage = this.updater((state: State, page: number) => ({
     ...state,
     page,
     posts: []
   }));
 
+  readonly setPosts = this.updater((state, posts: Post[]) => ({
+    ...state,
+    posts
+  }));
+
+  // Effects
   private readonly getPosts = this.effect((page$: Observable<number>) => page$.pipe(
     // 👇 Handle race condition with the proper choice of the flattening operator.
     switchMap((page) => this.postsService.getPosts(page).pipe(
@@ -45,9 +55,4 @@ export class StateStore extends ComponentStore<State> {
       catchError(() => EMPTY),
     )),
   ));
-
-  readonly setPosts = this.updater((state, posts: Post[]) => ({
-    ...state,
-    posts
-  }));
 }

@@ -17,6 +17,11 @@ export interface Post {
   id: number;
 }
 
+/**
+ * Some API Service responsible for making api calls.
+ * Typically when consumed by state management libraries such as ngrx,
+ * it must be consumed as a side-effect. For ngrx, we use effects.
+ */
 @Injectable({
   providedIn: 'root'
 })
