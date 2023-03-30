@@ -1,0 +1,14 @@
+<p>rxjs works!</p>
+
+<p>Page: {{ page$ | async }}</p>
+
+<p>Pages: <button *ngFor="let page of pages" (click)="setPage(page)">{{ page }}</button></p>
+
+<div *ngFor="let post of posts$ | async">
+  <!-- {{ post | json }} -->
+  <h3>{{ post.title }}</h3>
+  <p>{{ post.id }}</p>
+  <p>{{ post.body }}</p>
+  <p>Reactions: {{ post.reactions }}</p>
+  <p>Tags: <span *ngFor="let tag of post.tags">{{ tag }}</span></p>
+</div>
