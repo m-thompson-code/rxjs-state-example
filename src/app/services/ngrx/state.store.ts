@@ -16,21 +16,15 @@ const INITIAL_STATE: State = {
 @Injectable()
 export class StateStore extends ComponentStore<State> {
   // Selectors
-  readonly page$ = this.state$.pipe(
-    map(state => state.page),
-  );
+  readonly page$ = this.select((state) => state.page);
 
-  readonly posts$ = this.state$.pipe(
-    map(state => state.posts),
-  );
+  readonly posts$ = this.select((state) => state.posts);
 
   constructor(private readonly postsService: PostsService) {
     super(INITIAL_STATE);
 
     // Setup effect page$ -> posts$
-    this.getPosts(this.page$.pipe(distinctUntilChanged()));
-    // ^I don't know how else to set this up without `distinctUntilChanged`
-    // Without it, it will infinite loop
+    this.getPosts(this.page$);
   }
 
   // Actions + Reducers

@@ -48,8 +48,14 @@ export class StateAltService {
   );
 
   // Selectors
-  readonly page$ = this.state$.pipe(map(state => state.page));
-  readonly posts$ = this.state$.pipe(map(state => state.posts));
+  readonly page$ = this.state$.pipe(
+    map(state => state.page),
+    distinctUntilChanged()
+  );
+  readonly posts$ = this.state$.pipe(
+    map(state => state.posts),
+    distinctUntilChanged()
+  );
 
   // Effects
   private readonly postsEffect$ = this.page$.pipe(
@@ -80,9 +86,3 @@ export class StateAltService {
     this.unsubscribe$.complete();
   }
 }
-
-// This implementation doesn't handle effects just like ngrx,
-// but I feel like this is a better approach
-// One key difference is that this effect only functions if there's at least one subscription
-// To better match ngrx, the state must be subscribed from the service,
-// or at least the effect must be subscribed somewhere

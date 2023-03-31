@@ -41,7 +41,7 @@ export class PostsService {
 
     return this.http.get<Data>('https://dummyjson.com/posts', { params }).pipe(
       map(data => data.posts),
-      tap(console.log)
+      tap(posts => console.log(page, posts))
     );
   }
 }
