@@ -1,5 +1,8 @@
-<h1>ngrx works!</h1>
-<p><a href="https://ngrx.io/guide/component-store/initialization">NgRx component store</a> is a great way to manage global state and component state.</p>
+<hr>
+
+<h2>ngrx works!</h2>
+
+<p><a href="https://ngrx.io/guide/component-store/initialization">NgRx component store</a> is a great way to manage global state and local state.</p>
 
 <ng-container *ngIf="page$ | async as page; else info">
   <p>Page: {{ page }}</p>
@@ -12,10 +15,7 @@
 <p>Pages: <button *ngFor="let page of pages" (click)="setPage(page)">{{ page }}</button></p>
 
 <div *ngFor="let post of posts$ | async">
-  <!-- {{ post | json }} -->
   <h3>{{ post.title }}</h3>
-  <p>{{ post.id }}</p>
+  <p>id: {{ post.id }} | reactions: {{ post.reactions }}</p>
   <p>{{ post.body }}</p>
-  <p>Reactions: {{ post.reactions }}</p>
-  <p>Tags: <span *ngFor="let tag of post.tags">{{ tag }}</span></p>
 </div>

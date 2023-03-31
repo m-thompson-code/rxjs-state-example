@@ -31,7 +31,7 @@ export class StateStore extends ComponentStore<State> {
   readonly setPage = this.updater((state: State, page: number) => ({
     ...state,
     page,
-    posts: []
+    posts: state.page === page ? state.posts : [],
   }));
 
   readonly setPosts = this.updater((state, posts: Post[]) => ({
